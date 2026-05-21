@@ -27,3 +27,7 @@ export function getCoupons(): Promise<CouponDto[]> {
 export function getCouponById(id: number): Promise<CouponDto> {
   return apiFetch<CouponDto>(`/api/coupons/${id}`)
 }
+
+export function searchCoupons(query: string): Promise<CouponDto[]> {
+  return apiFetch<CouponDto[]>(`/api/coupons/search?query=${encodeURIComponent(query)}`)
+}

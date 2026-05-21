@@ -25,7 +25,8 @@
       "Bash(\"/c/Program Files/dotnet/dotnet.exe\" tool install --global dotnet-ef 2>&1)",
       "Bash(~/.dotnet/tools/dotnet-ef.exe migrations:*)",
       "Bash(PATH=\"/c/Program Files/dotnet:$PATH\" ~/.dotnet/tools/dotnet-ef.exe migrations add InitialCreate)",
-      "Bash(PATH=\"/c/Program Files/dotnet:$PATH\" \"/c/Program Files/dotnet/dotnet.exe\" build)"
+      "Bash(PATH=\"/c/Program Files/dotnet:$PATH\" \"/c/Program Files/dotnet/dotnet.exe\" build)",
+      "Bash(PATH=\"/c/Program Files/dotnet:$PATH\" \"/c/Program Files/dotnet/dotnet.exe\" build --no-incremental)"
     ]
   }
 }

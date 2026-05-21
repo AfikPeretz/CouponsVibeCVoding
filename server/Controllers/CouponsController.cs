@@ -74,7 +74,7 @@ public class CouponsController : ControllerBase
         _db.Coupons.Add(coupon);
         await _db.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetById), new { id = coupon.Id }, MapToDto(coupon));
+        return CreatedAtAction(nameof(GetById), new { id = coupon.Id }, CouponMapper.ToDto(coupon));
     }
 
     // ── GET /api/coupons ─────────────────────────────────────────────────────
@@ -90,7 +90,38 @@ public class CouponsController : ControllerBase
             .ThenByDescending(c => c.CreatedAt)
             .ToListAsync();
 
-        return Ok(coupons.Select(MapToDto));
+        return Ok(coupons.Select(CouponMapper.ToDto));
+    }
+
+    // ── GET /api/coupons/search?query= ───────────────────────────────────────
+    /// <summary>
+    /// Searches coupons by title, merchantName, normalizedMerchantName, provider, or couponCode.
+    /// Returns an empty list when query is blank (use GET /api/coupons to list all).
+    /// Search is case-insensitive for ASCII characters (SQLite LIKE behavior).
+    /// </summary>
+    [HttpGet("search")]
+    [ProducesResponseType(typeof(IEnumerable<CouponDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Search([FromQuery] string? query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+            return Ok(Array.Empty<CouponDto>());
+
+        var q = query.Trim();
+
+        var coupons = await _db.Coupons
+            .Where(c =>
+                (c.Title != null && c.Title.Contains(q)) ||
+                (c.MerchantName != null && c.MerchantName.Contains(q)) ||
+                (c.NormalizedMerchantName != null && c.NormalizedMerchantName.Contains(q)) ||
+                (c.Provider != null && c.Provider.Contains(q)) ||
+                (c.CouponCode != null && c.CouponCode.Contains(q)))
+            .OrderBy(c => c.Status == CouponStatus.Active ? 0 : 1)
+            .ThenBy(c => c.ExpirationDate.HasValue ? 0 : 1)
+            .ThenBy(c => c.ExpirationDate)
+            .ThenByDescending(c => c.CreatedAt)
+            .ToListAsync();
+
+        return Ok(coupons.Select(CouponMapper.ToDto));
     }
 
     // ── GET /api/coupons/{id} ────────────────────────────────────────────────
@@ -104,34 +135,6 @@ public class CouponsController : ControllerBase
         if (coupon is null)
             return NotFound();
 
-        return Ok(MapToDto(coupon));
+        return Ok(CouponMapper.ToDto(coupon));
     }
-
-    // ── Private mapper ───────────────────────────────────────────────────────
-    private static CouponDto MapToDto(Coupon c) => new()
-    {
-        Id                     = c.Id,
-        RawText                = c.RawText,
-        Title                  = c.Title,
-        Provider               = c.Provider,
-        MerchantName           = c.MerchantName,
-        NormalizedMerchantName = c.NormalizedMerchantName,
-        Category               = c.Category,
-        OriginalAmount         = c.OriginalAmount,
-        RemainingAmount        = c.RemainingAmount,
-        Currency               = c.Currency,
-        CouponCode             = c.CouponCode,
-        Numerator              = c.Numerator,
-        VoucherUrl             = c.VoucherUrl,
-        ExpirationDate         = c.ExpirationDate,
-        ExpirationText         = c.ExpirationText,
-        ExpirationType         = c.ExpirationType,
-        OnlineRedeemable       = c.OnlineRedeemable,
-        Status                 = c.Status,
-        Confidence             = c.Confidence,
-        ConditionsText         = c.ConditionsText,
-        ReceivedAt             = c.ReceivedAt,
-        CreatedAt              = c.CreatedAt,
-        UpdatedAt              = c.UpdatedAt,
-    };
 }

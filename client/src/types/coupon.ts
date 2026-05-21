@@ -14,6 +14,16 @@ export const STATUS_LABELS: Record<number, string> = {
   0: 'לא ידוע', 1: 'פעיל', 2: 'פג תוקף', 3: 'מומש',
 }
 
+// ── Categories ───────────────────────────────────────────────────────────────
+
+export interface CategorySummary {
+  category: number
+  displayName: string
+  totalCoupons: number
+  activeCoupons: number
+  totalActiveRemainingAmount: number | null
+}
+
 // ── Analyze ──────────────────────────────────────────────────────────────────
 
 // Request sent to POST /api/coupons/analyze
