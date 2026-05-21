@@ -27,7 +27,8 @@
       "Bash(PATH=\"/c/Program Files/dotnet:$PATH\" ~/.dotnet/tools/dotnet-ef.exe migrations add InitialCreate)",
       "Bash(PATH=\"/c/Program Files/dotnet:$PATH\" \"/c/Program Files/dotnet/dotnet.exe\" build)",
       "Bash(PATH=\"/c/Program Files/dotnet:$PATH\" \"/c/Program Files/dotnet/dotnet.exe\" build --no-incremental)",
-      "Bash(PATH=\"/c/Program Files/dotnet:$PATH\" \"/c/Program Files/dotnet/dotnet.exe\" test server.Tests)"
+      "Bash(PATH=\"/c/Program Files/dotnet:$PATH\" \"/c/Program Files/dotnet/dotnet.exe\" test server.Tests)",
+      "Bash(find '/c/Users/afikp/Desktop/Projects/vibe coding/coupon-manager' -maxdepth 3 -name *.env* -o -name .env* -o -name Dockerfile* -o -name *.example -o -name appsettings*.json)"
     ]
   }
 }
