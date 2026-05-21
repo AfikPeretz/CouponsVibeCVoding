@@ -17,7 +17,15 @@
       "Bash(cmd.exe /c \"cd \\\\\"C:\\\\\\\\Users\\\\\\\\afikp\\\\\\\\Desktop\\\\\\\\Projects\\\\\\\\vibe coding\\\\\\\\coupon-manager\\\\\\\\server\\\\\" && dotnet build 2>&1\")",
       "Read(//c/Users/afikp/AppData/Local/Programs/dotnet/**)",
       "Read(//c/Users/afikp/**)",
-      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" test \"C:/Users/afikp/Desktop/Projects/vibe coding/coupon-manager/server.Tests/CouponManager.Api.Tests.csproj\" --logger \"console;verbosity=normal\" 2>&1)"
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" test \"C:/Users/afikp/Desktop/Projects/vibe coding/coupon-manager/server.Tests/CouponManager.Api.Tests.csproj\" --logger \"console;verbosity=normal\" 2>&1)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build \"C:/Users/afikp/Desktop/Projects/vibe coding/coupon-manager/server/CouponManager.Api.csproj\" 2>&1)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" build \"C:/Users/afikp/Desktop/Projects/vibe coding/coupon-manager/server.Tests/CouponManager.Api.Tests.csproj\")",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" ef migrations add InitialCreate)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" tool list -g 2>&1)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" tool install --global dotnet-ef 2>&1)",
+      "Bash(~/.dotnet/tools/dotnet-ef.exe migrations:*)",
+      "Bash(PATH=\"/c/Program Files/dotnet:$PATH\" ~/.dotnet/tools/dotnet-ef.exe migrations add InitialCreate)",
+      "Bash(PATH=\"/c/Program Files/dotnet:$PATH\" \"/c/Program Files/dotnet/dotnet.exe\" build)"
     ]
   }
 }
