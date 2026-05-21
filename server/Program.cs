@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using CouponManager.Api.Data;
+using CouponManager.Api.Services.CouponParsing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,9 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")
         ?? "Data Source=coupon-manager.db"));
+
+// Coupon parser service
+builder.Services.AddScoped<ICouponParserService, CouponParserService>();
 
 // CORS — allow local Vite dev server
 builder.Services.AddCors(options =>

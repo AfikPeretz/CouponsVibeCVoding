@@ -12,7 +12,12 @@
       "Bash(npm install:*)",
       "Bash(npx tailwindcss:*)",
       "Bash(./node_modules/.bin/tailwindcss init:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(cmd.exe /c \"dotnet build server/CouponManager.Api.csproj 2>&1\")",
+      "Bash(cmd.exe /c \"cd \\\\\"C:\\\\\\\\Users\\\\\\\\afikp\\\\\\\\Desktop\\\\\\\\Projects\\\\\\\\vibe coding\\\\\\\\coupon-manager\\\\\\\\server\\\\\" && dotnet build 2>&1\")",
+      "Read(//c/Users/afikp/AppData/Local/Programs/dotnet/**)",
+      "Read(//c/Users/afikp/**)",
+      "Bash(\"/c/Program Files/dotnet/dotnet.exe\" test \"C:/Users/afikp/Desktop/Projects/vibe coding/coupon-manager/server.Tests/CouponManager.Api.Tests.csproj\" --logger \"console;verbosity=normal\" 2>&1)"
     ]
   }
 }
