@@ -11,7 +11,7 @@ export const EXPIRY_TYPE_LABELS: Record<number, string> = {
 }
 
 export const STATUS_LABELS: Record<number, string> = {
-  0: 'לא ידוע', 1: 'פעיל', 2: 'פג תוקף', 3: 'מומש',
+  0: 'לא ידוע', 1: 'פעיל', 2: 'פג תוקף', 3: 'מומש', 4: 'ארכיון',
 }
 
 // ── Categories ───────────────────────────────────────────────────────────────
@@ -78,6 +78,11 @@ export interface CreateCouponRequest {
   status: number
   confidence: number
   conditionsText: string | null
+}
+
+// Request sent to PATCH /api/coupons/{id}/remaining-amount
+export interface UpdateRemainingAmountRequest {
+  remainingAmount: number
 }
 
 // Response from GET /api/coupons and GET /api/coupons/{id}

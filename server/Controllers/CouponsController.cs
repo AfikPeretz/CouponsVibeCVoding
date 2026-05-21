@@ -44,17 +44,14 @@ public class CouponsController : ControllerBase
         var coupon = new Coupon
         {
             RawText                = request.RawText,
-            Title                  = string.IsNullOrWhiteSpace(request.Title)
-                                        ? "קופון" : request.Title,
+            Title                  = string.IsNullOrWhiteSpace(request.Title)    ? "קופון"    : request.Title,
             Provider               = request.Provider,
-            MerchantName           = string.IsNullOrWhiteSpace(request.MerchantName)
-                                        ? "לא זוהה" : request.MerchantName,
+            MerchantName           = string.IsNullOrWhiteSpace(request.MerchantName) ? "לא זוהה" : request.MerchantName,
             NormalizedMerchantName = request.NormalizedMerchantName,
             Category               = (CouponCategory)request.Category,
             OriginalAmount         = request.OriginalAmount,
             RemainingAmount        = request.RemainingAmount,
-            Currency               = string.IsNullOrWhiteSpace(request.Currency)
-                                        ? "ILS" : request.Currency,
+            Currency               = string.IsNullOrWhiteSpace(request.Currency) ? "ILS"      : request.Currency,
             CouponCode             = request.CouponCode,
             Numerator              = request.Numerator,
             VoucherUrl             = request.VoucherUrl,
@@ -62,8 +59,7 @@ public class CouponsController : ControllerBase
             ExpirationText         = request.ExpirationText,
             ExpirationType         = (ExpirationType)request.ExpirationType,
             OnlineRedeemable       = request.OnlineRedeemable,
-            Status                 = request.Status == 0
-                                        ? CouponStatus.Active : (CouponStatus)request.Status,
+            Status                 = request.Status == 0 ? CouponStatus.Active : (CouponStatus)request.Status,
             Confidence             = request.Confidence,
             ConditionsText         = request.ConditionsText,
             ReceivedAt             = now,
@@ -96,8 +92,7 @@ public class CouponsController : ControllerBase
     // ── GET /api/coupons/search?query= ───────────────────────────────────────
     /// <summary>
     /// Searches coupons by title, merchantName, normalizedMerchantName, provider, or couponCode.
-    /// Returns an empty list when query is blank (use GET /api/coupons to list all).
-    /// Search is case-insensitive for ASCII characters (SQLite LIKE behavior).
+    /// Returns an empty list when query is blank.
     /// </summary>
     [HttpGet("search")]
     [ProducesResponseType(typeof(IEnumerable<CouponDto>), StatusCodes.Status200OK)]
@@ -132,9 +127,109 @@ public class CouponsController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var coupon = await _db.Coupons.FindAsync(id);
-        if (coupon is null)
-            return NotFound();
-
+        if (coupon is null) return NotFound();
         return Ok(CouponMapper.ToDto(coupon));
+    }
+
+    // ── PUT /api/coupons/{id} ────────────────────────────────────────────────
+    /// <summary>Updates all editable fields of a coupon.</summary>
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(typeof(CouponDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateCouponRequest request)
+    {
+        var coupon = await _db.Coupons.FindAsync(id);
+        if (coupon is null) return NotFound();
+
+        coupon.Title                  = string.IsNullOrWhiteSpace(request.Title)        ? "קופון"    : request.Title;
+        coupon.Provider               = request.Provider;
+        coupon.MerchantName           = string.IsNullOrWhiteSpace(request.MerchantName) ? "לא זוהה" : request.MerchantName;
+        coupon.NormalizedMerchantName = request.NormalizedMerchantName;
+        coupon.Category               = (CouponCategory)request.Category;
+        coupon.OriginalAmount         = request.OriginalAmount;
+        coupon.RemainingAmount        = request.RemainingAmount;
+        coupon.Currency               = string.IsNullOrWhiteSpace(request.Currency)     ? "ILS"      : request.Currency;
+        coupon.CouponCode             = request.CouponCode;
+        coupon.Numerator              = request.Numerator;
+        coupon.VoucherUrl             = request.VoucherUrl;
+        coupon.ExpirationDate         = request.ExpirationDate;
+        coupon.ExpirationText         = request.ExpirationText;
+        coupon.ExpirationType         = (ExpirationType)request.ExpirationType;
+        coupon.OnlineRedeemable       = request.OnlineRedeemable;
+        coupon.Status                 = (CouponStatus)request.Status;
+        coupon.ConditionsText         = request.ConditionsText;
+        coupon.UpdatedAt              = DateTime.UtcNow;
+
+        await _db.SaveChangesAsync();
+        return Ok(CouponMapper.ToDto(coupon));
+    }
+
+    // ── PATCH /api/coupons/{id}/remaining-amount ─────────────────────────────
+    /// <summary>Updates only the remaining amount.</summary>
+    [HttpPatch("{id:int}/remaining-amount")]
+    [ProducesResponseType(typeof(CouponDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateRemainingAmount(int id, [FromBody] UpdateRemainingAmountRequest request)
+    {
+        var coupon = await _db.Coupons.FindAsync(id);
+        if (coupon is null) return NotFound();
+
+        coupon.RemainingAmount = request.RemainingAmount;
+        coupon.UpdatedAt       = DateTime.UtcNow;
+
+        await _db.SaveChangesAsync();
+        return Ok(CouponMapper.ToDto(coupon));
+    }
+
+    // ── PATCH /api/coupons/{id}/mark-used ────────────────────────────────────
+    /// <summary>Sets status to Used and remaining amount to 0 if it was set.</summary>
+    [HttpPatch("{id:int}/mark-used")]
+    [ProducesResponseType(typeof(CouponDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> MarkUsed(int id)
+    {
+        var coupon = await _db.Coupons.FindAsync(id);
+        if (coupon is null) return NotFound();
+
+        coupon.Status    = CouponStatus.Used;
+        if (coupon.RemainingAmount.HasValue)
+            coupon.RemainingAmount = 0;
+        coupon.UpdatedAt = DateTime.UtcNow;
+
+        await _db.SaveChangesAsync();
+        return Ok(CouponMapper.ToDto(coupon));
+    }
+
+    // ── PATCH /api/coupons/{id}/archive ──────────────────────────────────────
+    /// <summary>Sets status to Archived.</summary>
+    [HttpPatch("{id:int}/archive")]
+    [ProducesResponseType(typeof(CouponDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Archive(int id)
+    {
+        var coupon = await _db.Coupons.FindAsync(id);
+        if (coupon is null) return NotFound();
+
+        coupon.Status    = CouponStatus.Archived;
+        coupon.UpdatedAt = DateTime.UtcNow;
+
+        await _db.SaveChangesAsync();
+        return Ok(CouponMapper.ToDto(coupon));
+    }
+
+    // ── DELETE /api/coupons/{id} ──────────────────────────────────────────────
+    /// <summary>Permanently deletes a coupon.</summary>
+    [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var coupon = await _db.Coupons.FindAsync(id);
+        if (coupon is null) return NotFound();
+
+        _db.Coupons.Remove(coupon);
+        await _db.SaveChangesAsync();
+        return NoContent();
     }
 }
