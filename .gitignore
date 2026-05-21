@@ -1,0 +1,23 @@
+# .NET
+server/bin/
+server/obj/
+server/*.db
+server/*.db-shm
+server/*.db-wal
+
+# Node
+client/node_modules/
+client/dist/
+
+# Environment
+client/.env
+.env
+
+# IDE
+.vs/
+.vscode/
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
