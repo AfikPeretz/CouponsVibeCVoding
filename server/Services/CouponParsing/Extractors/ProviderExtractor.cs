@@ -18,8 +18,8 @@ public static class ProviderExtractor
         if (lower.Contains("buyme") || text.Contains("קיבלת מתנה"))
             return "BuyMe";
 
-        // HTZone — keyword in text/URL, or brand name "All-InZone"
-        if (lower.Contains("htzone") || text.Contains("All-InZone"))
+        // HTZone — keyword in text/URL, Hebrew transliteration, or brand name "All-InZone"
+        if (lower.Contains("htzone") || text.Contains("הייטק זון") || text.Contains("All-InZone"))
             return "HTZone";
 
         // Delek UP — keyword, or ג'ו דלק (Joe Delek is a Delek-chain store)

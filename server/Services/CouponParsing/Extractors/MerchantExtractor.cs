@@ -22,6 +22,11 @@ public static class MerchantExtractor
         if (text.Contains("ג'ו דלק") || text.Contains("Joe Delek"))
             return new MerchantResult("ג'ו דלק", "Joe Delek");
 
+        // Restaurants — last-resort fallback when no specific merchant matched
+        // and the text indicates a restaurants voucher.
+        if (text.Contains("מסעדות"))
+            return new MerchantResult("מסעדות", "Restaurants");
+
         return new MerchantResult(null, null);
     }
 }

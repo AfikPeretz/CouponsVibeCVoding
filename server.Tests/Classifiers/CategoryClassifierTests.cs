@@ -10,6 +10,7 @@ public class CategoryClassifierTests
     [InlineData("Golda",      null,    CouponCategory.Food)]
     [InlineData("All-InZone", null,    CouponCategory.MultiBrand)]
     [InlineData("Joe Delek",  null,    CouponCategory.FuelStationStore)]
+    [InlineData("Restaurants",null,    CouponCategory.Food)]
     [InlineData(null,         "BuyMe", CouponCategory.GiftCard)]
     [InlineData(null,         null,    CouponCategory.Other)]
     [InlineData("Unknown",    "BuyMe", CouponCategory.Other)]   // known merchant beats provider rule

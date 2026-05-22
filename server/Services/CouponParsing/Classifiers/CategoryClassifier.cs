@@ -8,10 +8,11 @@ public static class CategoryClassifier
     {
         return normalizedMerchant switch
         {
-            "Shufersal" => CouponCategory.Supermarket,
-            "Golda"     => CouponCategory.Food,
-            "All-InZone"=> CouponCategory.MultiBrand,
-            "Joe Delek" => CouponCategory.FuelStationStore,
+            "Shufersal"   => CouponCategory.Supermarket,
+            "Golda"       => CouponCategory.Food,
+            "All-InZone"  => CouponCategory.MultiBrand,
+            "Joe Delek"   => CouponCategory.FuelStationStore,
+            "Restaurants" => CouponCategory.Food,
             // BuyMe voucher with no identified merchant → generic gift card
             null when provider == "BuyMe" => CouponCategory.GiftCard,
             _ => CouponCategory.Other

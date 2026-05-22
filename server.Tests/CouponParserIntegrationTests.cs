@@ -213,4 +213,94 @@ public class CouponParserIntegrationTests
         var result = _parser.Analyze(JoDelekText);
         Assert.Equal(CouponCategory.FuelStationStore, result.Category);
     }
+
+    // -------------------------------------------------------------------------
+    // Test 5: All-InZone with יתרה / קוד השובר שלך / received-date + 5 שנים
+    // -------------------------------------------------------------------------
+    private const string AllInZoneRemainingText =
+        "התקבל בתאריך 30/03/2025 שובר All-InZone בשווי 510 ₪. " +
+        "יתרה 63.5. " +
+        "קוד השובר שלך: 118283629-2124. " +
+        "תוקף השובר: 5 שנים";
+
+    [Fact]
+    public void Parse_AllInZoneRemaining_OriginalAmount()
+    {
+        var result = _parser.Analyze(AllInZoneRemainingText);
+        Assert.Equal(510m, result.OriginalAmount);
+    }
+
+    [Fact]
+    public void Parse_AllInZoneRemaining_RemainingAmount()
+    {
+        var result = _parser.Analyze(AllInZoneRemainingText);
+        Assert.Equal(63.5m, result.RemainingAmount);
+    }
+
+    [Fact]
+    public void Parse_AllInZoneRemaining_CouponCode()
+    {
+        var result = _parser.Analyze(AllInZoneRemainingText);
+        Assert.Equal("118283629-2124", result.CouponCode);
+    }
+
+    [Fact]
+    public void Parse_AllInZoneRemaining_ProviderAndMerchant()
+    {
+        var result = _parser.Analyze(AllInZoneRemainingText);
+        Assert.Equal("HTZone", result.Provider);
+        Assert.Equal("All-InZone", result.MerchantName);
+    }
+
+    [Fact]
+    public void Parse_AllInZoneRemaining_CategoryIsMultiBrand()
+    {
+        var result = _parser.Analyze(AllInZoneRemainingText);
+        Assert.Equal(CouponCategory.MultiBrand, result.Category);
+    }
+
+    [Fact]
+    public void Parse_AllInZoneRemaining_RelativeDurationProjectedFromReceivedDate()
+    {
+        var result = _parser.Analyze(AllInZoneRemainingText);
+        Assert.Equal(ExpirationType.RelativeDuration, result.ExpirationType);
+        Assert.Contains("5 שנים", result.ExpirationText);
+        Assert.Equal(new DateTime(2030, 3, 30, 0, 0, 0, DateTimeKind.Utc), result.ExpirationDate);
+    }
+
+    // -------------------------------------------------------------------------
+    // Test 6: Restaurant voucher with מספר שובר
+    // -------------------------------------------------------------------------
+    private const string RestaurantText =
+        "שובר למסעדות שף בסך 150 ₪. " +
+        "מספר שובר: 20573525";
+
+    [Fact]
+    public void Parse_Restaurant_Amount()
+    {
+        var result = _parser.Analyze(RestaurantText);
+        Assert.Equal(150m, result.OriginalAmount);
+    }
+
+    [Fact]
+    public void Parse_Restaurant_MerchantFallback()
+    {
+        var result = _parser.Analyze(RestaurantText);
+        Assert.Equal("מסעדות", result.MerchantName);
+        Assert.Equal("Restaurants", result.NormalizedMerchantName);
+    }
+
+    [Fact]
+    public void Parse_Restaurant_CategoryIsFood()
+    {
+        var result = _parser.Analyze(RestaurantText);
+        Assert.Equal(CouponCategory.Food, result.Category);
+    }
+
+    [Fact]
+    public void Parse_Restaurant_CouponCode()
+    {
+        var result = _parser.Analyze(RestaurantText);
+        Assert.Equal("20573525", result.CouponCode);
+    }
 }

@@ -22,9 +22,9 @@ public static class ExpirationDateExtractor
     private static readonly Regex _dotDate =
         new(@"(\d{2})\.(\d{2})\.(\d{2,4})", RegexOptions.Compiled);
 
-    // Relative duration after "תוקף..." label: "5 שנים", "30 ימים", "חודש"
+    // Relative duration: "תוקף ... : N שנים" or "תקף ל-N שנים" / "תקף ל N שנים"
     private static readonly Regex _relativeDuration = new(
-        @"(?:תוקף[^:\n]*:[^\n]*?)(\d+\s*(?:שנים|חודשים|ימים|יום|שנה|חודש))",
+        @"(?:תוקף[^:\n]*:|תקף\s*ל[-]?\s*)[^\n]*?(\d+\s*(?:שנים|חודשים|ימים|יום|שנה|חודש))",
         RegexOptions.Compiled);
 
     public static ExpirationResult Extract(string text)
@@ -33,7 +33,16 @@ public static class ExpirationDateExtractor
         if (_untilNotice.IsMatch(text))
             return new ExpirationResult(null, "עד הודעה חדשה", ExpirationType.UntilNotice);
 
-        // 2. Exact date — DD/MM/YYYY
+        // 2. Relative duration first — a text like "התקבל בתאריך 30/03/2025 ... תוקף 5 שנים"
+        //    must not have the received date mis-classified as the expiration date.
+        var relMatch = _relativeDuration.Match(text);
+        if (relMatch.Success)
+        {
+            var durationText = relMatch.Groups[1].Value.Trim();
+            return new ExpirationResult(null, durationText, ExpirationType.RelativeDuration);
+        }
+
+        // 3. Exact date — DD/MM/YYYY
         var slashMatch = _slashDate.Match(text);
         if (slashMatch.Success)
         {
@@ -47,7 +56,7 @@ public static class ExpirationDateExtractor
             }
         }
 
-        // 3. Exact date — DD.MM.YY or DD.MM.YYYY
+        // 4. Exact date — DD.MM.YY or DD.MM.YYYY
         var dotMatch = _dotDate.Match(text);
         if (dotMatch.Success)
         {
@@ -60,14 +69,6 @@ public static class ExpirationDateExtractor
                 var date = new DateTime(year, month, day, 0, 0, 0, DateTimeKind.Utc);
                 return new ExpirationResult(date, dotMatch.Value, ExpirationType.ExactDate);
             }
-        }
-
-        // 4. Relative duration  e.g. "תוקף השובר: 5 שנים"
-        var relMatch = _relativeDuration.Match(text);
-        if (relMatch.Success)
-        {
-            var durationText = relMatch.Groups[1].Value.Trim();
-            return new ExpirationResult(null, durationText, ExpirationType.RelativeDuration);
         }
 
         return new ExpirationResult(null, null, ExpirationType.Unknown);

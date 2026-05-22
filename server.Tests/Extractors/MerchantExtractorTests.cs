@@ -11,6 +11,8 @@ public class MerchantExtractorTests
     [InlineData("גלידה ב-Golda",               "גלידת גולדה", "Golda")]
     [InlineData("שובר All-InZone בשווי 500",   "All-InZone",  "All-InZone")]
     [InlineData("בחנויות ג'ו דלק",             "ג'ו דלק",     "Joe Delek")]
+    [InlineData("שובר למסעדות שף בסך 150 ₪",   "מסעדות",      "Restaurants")]
+    [InlineData("קופון למסעדות",                "מסעדות",      "Restaurants")]
     public void Extract_ReturnsCorrectMerchant(string text,
         string expectedMerchant, string expectedNormalized)
     {

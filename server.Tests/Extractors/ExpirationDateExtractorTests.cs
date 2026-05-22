@@ -43,6 +43,16 @@ public class ExpirationDateExtractorTests
     }
 
     [Fact]
+    public void Extract_TakefLamedForm_ReturnsRelativeDuration()
+    {
+        var result = ExpirationDateExtractor.Extract("תקף ל-5 שנים");
+
+        Assert.Equal(ExpirationType.RelativeDuration, result.Type);
+        Assert.Null(result.Date);
+        Assert.Contains("5 שנים", result.Text);
+    }
+
+    [Fact]
     public void Extract_NoExpiry_ReturnsUnknown()
     {
         var result = ExpirationDateExtractor.Extract("קופון ללא תאריך");
