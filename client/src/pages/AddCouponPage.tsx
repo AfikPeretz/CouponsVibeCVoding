@@ -101,9 +101,9 @@ export default function AddCouponPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold mb-1">הוסף קופון חדש</h1>
+        <h1 className="text-2xl font-bold mb-1">הוסף שובר חדש</h1>
         <p className="text-sm text-gray-500">
-          הדבק הודעת SMS או טקסט גולמי שמכיל קופון. המערכת תנתח את הטקסט ותחלץ את הפרטים לעיון ועריכה.
+          הדבק הודעת SMS או טקסט גולמי שמכיל שובר. המערכת תנתח את הטקסט ותחלץ את הפרטים לעיון ועריכה.
         </p>
       </div>
 
@@ -137,14 +137,14 @@ export default function AddCouponPage() {
           className="w-full bg-blue-600 text-white py-2 rounded-md text-sm font-medium
                      hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
-          {analyzeMutation.isPending ? 'מנתח...' : 'נתח קופון'}
+          {analyzeMutation.isPending ? 'מנתח...' : 'נתח שובר'}
         </button>
       </form>
 
       {/* ── Analyze error ─────────────────────────────────────────────── */}
       {analyzeMutation.isError && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
-          שגיאה בניתוח הקופון. ודא שהשרת פעיל ונסה שנית.
+          שגיאה בניתוח השובר. ודא שהשרת פעיל ונסה שנית.
           {analyzeMutation.error instanceof Error && (
             <p className="mt-1 text-xs text-red-500">{analyzeMutation.error.message}</p>
           )}
@@ -229,7 +229,7 @@ export default function AddCouponPage() {
           {/* ── מימוש ────────────────────────────────────────────────── */}
           <fieldset className="space-y-3">
             <legend className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">מימוש</legend>
-            <FieldRow label="קוד קופון">
+            <FieldRow label="קוד שובר">
               <input type="text" value={result.couponCode ?? ''}
                 onChange={(e) => updateField('couponCode', e.target.value || null)}
                 className={inputClass} />
@@ -313,7 +313,7 @@ export default function AddCouponPage() {
           {/* ── Save error ─────────────────────────────────────────────── */}
           {saveMutation.isError && (
             <div className="bg-red-50 border border-red-200 rounded-md p-3 text-sm text-red-700">
-              שגיאה בשמירת הקופון. נסה שנית.
+              שגיאה בשמירת השובר. נסה שנית.
               {saveMutation.error instanceof Error && (
                 <p className="mt-1 text-xs text-red-500">{saveMutation.error.message}</p>
               )}
@@ -328,7 +328,7 @@ export default function AddCouponPage() {
             className="w-full bg-green-600 text-white py-2 rounded-md text-sm font-medium
                        hover:bg-green-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
-            {saveMutation.isPending ? 'שומר...' : 'שמור קופון'}
+            {saveMutation.isPending ? 'שומר...' : 'שמור שובר'}
           </button>
         </div>
       )}

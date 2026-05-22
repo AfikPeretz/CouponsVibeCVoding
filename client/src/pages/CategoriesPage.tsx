@@ -71,7 +71,7 @@ export default function CategoriesPage() {
 
         {categories && categories.length === 0 && (
           <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
-            <p className="text-gray-400 text-sm">אין עדיין קופונים שמורים</p>
+            <p className="text-gray-400 text-sm">אין עדיין שוברים שמורים</p>
           </div>
         )}
 
@@ -105,18 +105,18 @@ export default function CategoriesPage() {
       </div>
 
       {couponsLoading && (
-        <p className="text-sm text-gray-400 text-center py-8">טוען קופונים...</p>
+        <p className="text-sm text-gray-400 text-center py-8">טוען שוברים...</p>
       )}
 
       {couponsError && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
-          שגיאה בטעינת הקופונים.
+          שגיאה בטעינת השוברים.
         </div>
       )}
 
       {coupons && coupons.length === 0 && (
         <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
-          <p className="text-gray-400 text-sm">אין קופונים בקטגוריה זו</p>
+          <p className="text-gray-400 text-sm">אין שוברים בקטגוריה זו</p>
         </div>
       )}
 

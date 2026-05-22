@@ -60,7 +60,7 @@ export default function CouponCard({ coupon }: { coupon: CouponDto }) {
   })
 
   function handleDelete() {
-    if (window.confirm(`למחוק את "${coupon.title ?? 'קופון'}"?`)) {
+    if (window.confirm(`למחוק את "${coupon.title ?? 'שובר'}"?`)) {
       deleteMutation.mutate()
     }
   }
@@ -99,7 +99,7 @@ export default function CouponCard({ coupon }: { coupon: CouponDto }) {
       {/* ── Header ────────────────────────────────────────────────────────── */}
       <div className="flex justify-between items-start gap-2">
         <div className="min-w-0">
-          <p className="font-semibold text-gray-900 truncate">{coupon.title ?? 'קופון'}</p>
+          <p className="font-semibold text-gray-900 truncate">{coupon.title ?? 'שובר'}</p>
           <p className="text-sm text-gray-500 truncate">
             {coupon.merchantName ?? '—'}
             {coupon.provider ? ` · ${coupon.provider}` : ''}

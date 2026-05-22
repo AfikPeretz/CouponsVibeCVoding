@@ -60,7 +60,7 @@ export default function SearchPage() {
       {/* Empty results */}
       {hasQuery && !isLoading && results && results.length === 0 && (
         <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
-          <p className="text-gray-500 text-sm">לא נמצאו קופונים מתאימים</p>
+          <p className="text-gray-500 text-sm">לא נמצאו שוברים מתאימים</p>
           <p className="text-gray-400 text-xs mt-1">נסה מונח אחר</p>
         </div>
       )}

@@ -21,12 +21,6 @@ export default function DashboardPage() {
           </p>
         )}
       </div>
-
-      <div className="bg-white rounded-lg border border-gray-200 p-4">
-        <p className="text-gray-400 text-sm text-center">
-          אין קופונים עדיין. לחץ על "הוסף" להוסיף קופון חדש.
-        </p>
-      </div>
     </div>
   )
 }

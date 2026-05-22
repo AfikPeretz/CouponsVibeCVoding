@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 
 const links = [
   { to: '/dashboard', label: 'דשבורד' },
-  { to: '/coupons', label: 'קופונים' },
+  { to: '/coupons', label: 'שוברים' },
   { to: '/add', label: '+ הוסף' },
   { to: '/search', label: 'חיפוש' },
   { to: '/categories', label: 'קטגוריות' },
