@@ -37,8 +37,21 @@ public class CouponsController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(CouponDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Create([FromBody] CreateCouponRequest request)
     {
+        var code = string.IsNullOrWhiteSpace(request.CouponCode) ? null : request.CouponCode;
+        var url  = string.IsNullOrWhiteSpace(request.VoucherUrl) ? null : request.VoucherUrl;
+        var checkRaw = code is null && url is null;
+
+        var isDuplicate = await _db.Coupons.AnyAsync(c =>
+            (code != null && c.CouponCode == code) ||
+            (url  != null && c.VoucherUrl == url) ||
+            (checkRaw && c.RawText == request.RawText));
+
+        if (isDuplicate)
+            return Conflict(new { message = "שובר זה כבר קיים במערכת" });
+
         var now = DateTime.UtcNow;
 
         var coupon = new Coupon

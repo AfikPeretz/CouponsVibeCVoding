@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { analyzeCoupon, createCoupon } from '../api/couponApi'
+import { ApiError } from '../api/client'
 import {
   CATEGORY_LABELS,
   EXPIRY_TYPE_LABELS,
@@ -313,9 +314,15 @@ export default function AddCouponPage() {
           {/* ── Save error ─────────────────────────────────────────────── */}
           {saveMutation.isError && (
             <div className="bg-red-50 border border-red-200 rounded-md p-3 text-sm text-red-700">
-              שגיאה בשמירת השובר. נסה שנית.
-              {saveMutation.error instanceof Error && (
-                <p className="mt-1 text-xs text-red-500">{saveMutation.error.message}</p>
+              {saveMutation.error instanceof ApiError && saveMutation.error.status === 409 ? (
+                'שובר זה כבר קיים במערכת'
+              ) : (
+                <>
+                  שגיאה בשמירת השובר. נסה שנית.
+                  {saveMutation.error instanceof Error && (
+                    <p className="mt-1 text-xs text-red-500">{saveMutation.error.message}</p>
+                  )}
+                </>
               )}
             </div>
           )}
