@@ -140,3 +140,5 @@ C:\Users\afikp\Desktop\Projects\vibe coding\coupon-manager\server.Tests\obj\Debu
 C:\Users\afikp\Desktop\Projects\vibe coding\coupon-manager\server.Tests\obj\Debug\net8.0\CouponManager.Api.Tests.pdb
 C:\Users\afikp\Desktop\Projects\vibe coding\coupon-manager\server.Tests\obj\Debug\net8.0\CouponManager.Api.Tests.genruntimeconfig.cache
 C:\Users\afikp\Desktop\Projects\vibe coding\coupon-manager\server.Tests\obj\Debug\net8.0\ref\CouponManager.Api.Tests.dll
+C:\Users\afikp\Desktop\Projects\vibe coding\coupon-manager\server.Tests\bin\Debug\net8.0\Npgsql.dll
+C:\Users\afikp\Desktop\Projects\vibe coding\coupon-manager\server.Tests\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll

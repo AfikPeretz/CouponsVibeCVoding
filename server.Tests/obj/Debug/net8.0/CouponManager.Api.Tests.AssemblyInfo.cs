@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CouponManager.Api.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d50f9756ac19a59fdf6bafcfbbd9d7ddaa70811e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+607f4566174b25301fa2bdafe4d027345827d40e")]
 [assembly: System.Reflection.AssemblyProductAttribute("CouponManager.Api.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CouponManager.Api.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
